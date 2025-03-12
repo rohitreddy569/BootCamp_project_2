@@ -1,0 +1,22 @@
+{
+	"name": "MySql1",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "MySql",
+		"typeProperties": {
+			"server": "bootcamp2server.mysql.database.azure.com",
+			"port": 3306,
+			"database": "customers",
+			"username": "rohit569",
+			"sslMode": 1,
+			"useSystemTrustStore": 0,
+			"driverVersion": "v2",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkNTQ4YTg5OC00MTA2LTRhYWItOTJmNi05YjkwYzkxMjFmYjUiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "selfhostedonpremdb",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

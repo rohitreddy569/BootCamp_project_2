@@ -1,0 +1,7 @@
+{
+	"name": "selfhostedonpremdb",
+	"properties": {
+		"type": "SelfHosted",
+		"description": "Self hosted SQL DB for On premises Database"
+	}
+}
