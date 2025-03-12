@@ -1,4 +1,5 @@
 Bootcamp project 2
 Architecture :
-![image](https://github.com/user-attachments/assets/a0c9fba7-e0b3-4e38-b4de-a5a50f7d8775)
+![image](https://github.com/user-attachments/assets/efb654d3-f563-43d7-8086-92dd2467b226)
+
 
