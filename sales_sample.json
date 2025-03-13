@@ -28,7 +28,9 @@
   {"SaleID": 27.0, "CustomerID": 31.0, "ProductID": 29, "SaleDate": "2023-08-30", "Quantity": 5, "TotalAmount": 4552.2},
   {"SaleID": 28.0, "CustomerID": 52.0, "ProductID": 79, "SaleDate": "2023-09-23", "Quantity": 5, "TotalAmount": 1670.44},
   {"SaleID": 29.0, "CustomerID": 12.0, "ProductID": 22, "SaleDate": "2023-09-29", "Quantity": null, "TotalAmount": null},
-  {"SaleID": 30.0, "CustomerID": 9.0, "ProductID": 37, "SaleDate": null, "Quantity": 10, "TotalAmount": 3722.41},
+  {"SaleID": 30.0, "CustomerID": 9.0, "ProductID": 37, "SaleDate": null, "Quantity": 10, "TotalAmount": 3722.41} 
+],
+[
   {"id": 31.0, "value1": 51.0, "value2": 3, "date": "2023-10-31", "value3": 4, "amount": 3936.25},
   {"id": 32.0, "value1": 15.0, "value2": null, "date": "2024-01-12", "value3": 4, "amount": 2196.96},
   {"id": 33.0, "value1": 74.0, "value2": null, "date": "2025-01-08", "value3": 3, "amount": 3926.78},
