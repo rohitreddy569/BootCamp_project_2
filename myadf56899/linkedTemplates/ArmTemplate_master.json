@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "myadf56899"
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
 		"MySql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'MySql1'"
@@ -14,6 +18,10 @@
 		"ls_restapi_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_restapi'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://mystracc569.dfs.core.windows.net/"
 		},
 		"MySql1_properties_typeProperties_server": {
 			"type": "string",
@@ -27,9 +35,9 @@
 			"type": "string",
 			"defaultValue": "rohit569"
 		},
-		"RESTApi_linkedservice_properties_typeProperties_url": {
+		"ls_RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales.json"
+			"defaultValue": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales_sample.json"
 		},
 		"ls_restapi_properties_typeProperties_url": {
 			"type": "string",
@@ -62,14 +70,20 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureDataLakeStorage1_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					},
 					"ls_restapi_accountKey": {
 						"value": "[parameters('ls_restapi_accountKey')]"
 					},
 					"MySql1_password": {
 						"value": "[parameters('MySql1_password')]"
 					},
-					"RESTApi_linkedservice_properties_typeProperties_url": {
-						"value": "[parameters('RESTApi_linkedservice_properties_typeProperties_url')]"
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"ls_RestService1_properties_typeProperties_url": {
+						"value": "[parameters('ls_RestService1_properties_typeProperties_url')]"
 					},
 					"ls_restapi_properties_typeProperties_url": {
 						"value": "[parameters('ls_restapi_properties_typeProperties_url')]"

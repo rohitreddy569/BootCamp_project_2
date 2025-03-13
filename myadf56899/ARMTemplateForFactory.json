@@ -7,6 +7,10 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "myadf56899"
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
 		"MySql1_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'MySql1'"
@@ -14,6 +18,10 @@
 		"ls_restapi_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_restapi'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://mystracc569.dfs.core.windows.net/"
 		},
 		"MySql1_properties_typeProperties_server": {
 			"type": "string",
@@ -27,9 +35,9 @@
 			"type": "string",
 			"defaultValue": "rohit569"
 		},
-		"RESTApi_linkedservice_properties_typeProperties_url": {
+		"ls_RestService1_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales.json"
+			"defaultValue": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales_sample.json"
 		},
 		"ls_restapi_properties_typeProperties_url": {
 			"type": "string",
@@ -185,7 +193,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RESTApipipeline')]",
+			"name": "[concat(parameters('factoryName'), '/RestAPI Pipeline')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -213,82 +221,26 @@
 								}
 							},
 							"sink": {
-								"type": "DelimitedTextSink",
+								"type": "JsonSink",
 								"storeSettings": {
 									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".csv"
+									"type": "JsonWriteSettings"
 								}
 							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"path": "$['SaleID']"
-										},
-										"sink": {
-											"name": "SaleID"
-										}
-									},
-									{
-										"source": {
-											"path": "$['CustomerID']"
-										},
-										"sink": {
-											"name": "CustomerID"
-										}
-									},
-									{
-										"source": {
-											"path": "$['ProductID']"
-										},
-										"sink": {
-											"name": "ProductID"
-										}
-									},
-									{
-										"source": {
-											"path": "$['SaleDate']"
-										},
-										"sink": {
-											"name": "SaleDate"
-										}
-									},
-									{
-										"source": {
-											"path": "$['Quantity']"
-										},
-										"sink": {
-											"name": "Quantity"
-										}
-									},
-									{
-										"source": {
-											"path": "$['TotalAmount']"
-										},
-										"sink": {
-											"name": "TotalAmount"
-										}
-									}
-								],
-								"collectionReference": "$['data']"
-							}
+							"enableStaging": false
 						},
 						"inputs": [
 							{
-								"referenceName": "RestResource1",
+								"referenceName": "restapi",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "DelimitedText1",
+								"referenceName": "Json1",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -298,12 +250,11 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"annotations": [],
-				"lastPublishTime": "2025-03-12T14:52:53Z"
+				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
+				"[concat(variables('factoryId'), '/datasets/restapi')]",
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
 			]
 		},
 		{
@@ -361,6 +312,29 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Json1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "silver"
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/MySqlTable1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -381,12 +355,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
+			"name": "[concat(parameters('factoryName'), '/restapi')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "RESTApi_linkedservice",
+					"referenceName": "ls_RestService1",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -395,8 +369,25 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/RESTApi_linkedservice')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_RestService1')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/MySql1')]",
@@ -428,14 +419,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/RESTApi_linkedservice')]",
+			"name": "[concat(parameters('factoryName'), '/ls_RestService1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
 				"type": "RestService",
 				"typeProperties": {
-					"url": "[parameters('RESTApi_linkedservice_properties_typeProperties_url')]",
+					"url": "[parameters('ls_RestService1_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Anonymous"
 				}
@@ -458,38 +449,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/restapitrigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "RESTApipipeline",
-						"type": "PipelineReference"
-					},
-					"parameters": {}
-				},
-				"type": "TumblingWindowTrigger",
-				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 15,
-					"startTime": "2025-03-12T19:10:00Z",
-					"endTime": "2025-03-12T23:04:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": []
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/RESTApipipeline')]"
-			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/scheduletrigger')]",
@@ -522,7 +481,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger1')]",
+			"name": "[concat(parameters('factoryName'), '/tumblingwindow')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -530,16 +489,17 @@
 				"runtimeState": "Started",
 				"pipeline": {
 					"pipelineReference": {
-						"referenceName": "RESTApipipeline",
+						"referenceName": "RestAPI Pipeline",
 						"type": "PipelineReference"
 					},
 					"parameters": {}
 				},
 				"type": "TumblingWindowTrigger",
 				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 15,
-					"startTime": "2025-03-12T10:55:00Z",
+					"frequency": "Hour",
+					"interval": 5,
+					"startTime": "2025-03-12T22:04:00Z",
+					"endTime": "2025-03-14T02:01:00Z",
 					"delay": "00:00:00",
 					"maxConcurrency": 50,
 					"retryPolicy": {
@@ -549,28 +509,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/RESTApipipeline')]"
+				"[concat(variables('factoryId'), '/pipelines/RestAPI Pipeline')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SHIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/integrationRuntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"typeProperties": {}
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/selfhostedonpremdb')]",

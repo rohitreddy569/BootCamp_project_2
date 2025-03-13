@@ -5,11 +5,17 @@
 		"factoryName": {
 			"value": "myadf56899"
 		},
+		"AzureDataLakeStorage1_accountKey": {
+			"value": ""
+		},
 		"MySql1_password": {
 			"value": ""
 		},
 		"ls_restapi_accountKey": {
 			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://mystracc569.dfs.core.windows.net/"
 		},
 		"MySql1_properties_typeProperties_server": {
 			"value": "bootcamp2server.mysql.database.azure.com"
@@ -20,8 +26,8 @@
 		"MySql1_properties_typeProperties_username": {
 			"value": "rohit569"
 		},
-		"RESTApi_linkedservice_properties_typeProperties_url": {
-			"value": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales.json"
+		"ls_RestService1_properties_typeProperties_url": {
+			"value": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales_sample.json"
 		},
 		"ls_restapi_properties_typeProperties_url": {
 			"value": "https://mystracc569.dfs.core.windows.net/"
