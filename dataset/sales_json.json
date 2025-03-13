@@ -1,0 +1,41 @@
+{
+	"name": "sales_json",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "sales_sample",
+				"fileSystem": "bronze"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"SaleID": {
+					"type": "number"
+				},
+				"CustomerID": {
+					"type": "number"
+				},
+				"ProductID": {
+					"type": "integer"
+				},
+				"SaleDate": {
+					"type": "string"
+				},
+				"Quantity": {
+					"type": "integer"
+				},
+				"TotalAmount": {
+					"type": "number"
+				}
+			}
+		}
+	}
+}
