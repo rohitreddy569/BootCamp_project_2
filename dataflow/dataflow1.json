@@ -43,10 +43,10 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          ProductID as string,",
+				"          ProductID as integer,",
 				"          ProductName as string,",
 				"          Category as string,",
-				"          Price as string,",
+				"          Price as integer,",
 				"          StockQuantity as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
@@ -103,7 +103,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"products filter(ERROR_FUNCTION('')) ~> filter1",
-				"select1 derive(final_Quantity = iif(isNull(Quantity), 0 , Quantity)) ~> derivedColumn2"
+				"select1 derive(Quantity = iif(isNull(Quantity), 0 , Quantity)) ~> derivedColumn2"
 			]
 		}
 	}
