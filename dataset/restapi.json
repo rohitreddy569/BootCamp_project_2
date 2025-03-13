@@ -1,0 +1,12 @@
+{
+	"name": "restapi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_RestService1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
