@@ -39,6 +39,21 @@
 				},
 				{
 					"name": "derivedColumn2"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "surrogateKey2"
+				},
+				{
+					"name": "derivedColumn3"
 				}
 			],
 			"scriptLines": [
@@ -103,7 +118,20 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"products filter(ERROR_FUNCTION('')) ~> filter1",
-				"select1 derive(Quantity = iif(isNull(Quantity), 0 , Quantity)) ~> derivedColumn2"
+				"select1 derive(Quantity = iif(isNull(Quantity), 0 , Quantity)) ~> derivedColumn2",
+				"derivedColumn2 aggregate(avg_TotalAmount = avg(TotalAmount)) ~> aggregate1",
+				"surrogateKey1, surrogateKey2 join(surrogateKey1@surr_key == surrogateKey2@surr_key,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"derivedColumn2 keyGenerate(output(surr_key as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"aggregate1 keyGenerate(output(surr_key as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey2",
+				"join1 derive(TotalAmount = iif(isNull(TotalAmount), avg_TotalAmount, TotalAmount)) ~> derivedColumn3"
 			]
 		}
 	}
