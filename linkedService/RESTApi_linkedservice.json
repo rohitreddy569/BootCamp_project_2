@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales.json",
+			"url": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales_sample.json",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
