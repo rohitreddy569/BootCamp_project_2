@@ -1,0 +1,82 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "product_csv",
+						"type": "DatasetReference"
+					},
+					"name": "products"
+				},
+				{
+					"dataset": {
+						"referenceName": "sales_json",
+						"type": "DatasetReference"
+					},
+					"name": "sales"
+				},
+				{
+					"dataset": {
+						"referenceName": "customers",
+						"type": "DatasetReference"
+					},
+					"name": "customers"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "select1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductID as string,",
+				"          ProductName as string,",
+				"          Category as string,",
+				"          Price as string,",
+				"          StockQuantity as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> products",
+				"source(output(",
+				"          SaleID as double,",
+				"          CustomerID as double,",
+				"          ProductID as integer,",
+				"          SaleDate as string,",
+				"          Quantity as integer,",
+				"          TotalAmount as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> sales",
+				"source(output(",
+				"          CustomerID as string,",
+				"          CustomerName as string,",
+				"          Email as string,",
+				"          Phone as string,",
+				"          City as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> customers",
+				"sales select(mapColumn(",
+				"          SaleID,",
+				"          CustomerID,",
+				"          ProductID,",
+				"          SaleDate,",
+				"          Quantity,",
+				"          TotalAmount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1"
+			]
+		}
+	}
+}
