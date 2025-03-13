@@ -33,6 +33,12 @@
 				},
 				{
 					"name": "select1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -47,19 +53,19 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> products",
 				"source(output(",
-				"          CustomerID as double,",
-				"          ProductID as short,",
-				"          Quantity as short,",
+				"          CustomerID as integer,",
+				"          ProductID as integer,",
+				"          Quantity as integer,",
 				"          SaleDate as date,",
-				"          SaleID as double,",
-				"          TotalAmount as double,",
-				"          amount as double,",
-				"          category as short,",
+				"          SaleID as integer,",
+				"          TotalAmount as float,",
+				"          amount as float,",
+				"          category as integer,",
 				"          date as date,",
-				"          id as double,",
-				"          value1 as double,",
-				"          value2 as short,",
-				"          value3 as short",
+				"          id as integer,",
+				"          value1 as integer,",
+				"          value2 as integer,",
+				"          value3 as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -95,7 +101,9 @@
 				"          TotalAmount = final_TotalAmount",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1"
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"products filter(ERROR_FUNCTION('')) ~> filter1",
+				"select1 derive(final_Quantity = iif(isNull(Quantity), 0 , Quantity)) ~> derivedColumn2"
 			]
 		}
 	}
