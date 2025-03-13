@@ -29,7 +29,7 @@
 		},
 		"RESTApi_linkedservice_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://storage.googleapis.com/kagglesdsdata/datasets/6838784/10999635/sales_sample.json?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20250312%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20250312T143703Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=08bfaed8520b36828df4f1a54eaa7a6ade12f78cd999b3f6c9289ffb314044ede01936d0c5a98b34d02ab7277c0bb60a6ac3590fe41860833ebf487cbc94676dfa351dcd417aaea97f40864001246141f396881ea495e8afb80477c4bdb34f1dc8537cff4d1c029e3c88f5b879f712224a57df0796ce7a0ce7da32f4f911bf6d11c6f3835ee1330852bde34c9c20ff998f27295aa9e31e85749388d916572d3f47ecac3b036b2968e6e7d82c0ff58eba12c0ef8029e21e2f94ae8a918b6a26ae04e37d365c304998236860ba9d0e3f5b347f85d86ca11574bf2fb7009db2eee6e3eb9cbfd62ceecf557c32afca2b60ad7ecc0aa25da2846985749839756a81a8"
+			"defaultValue": "https://raw.githubusercontent.com/rohitreddy569/BootCamp_project_2/refs/heads/main/sales.json"
 		},
 		"ls_restapi_properties_typeProperties_url": {
 			"type": "string",
