@@ -176,7 +176,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": "silver"
+						"fileName": "sales_sample",
+						"fileSystem": "bronze"
 					}
 				},
 				"schema": {}
