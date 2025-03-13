@@ -33,60 +33,7 @@
 							"type": "JsonWriteSettings"
 						}
 					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"mappings": [
-							{
-								"source": {
-									"path": "$['SaleID']"
-								},
-								"sink": {
-									"path": "$['SaleID']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['CustomerID']"
-								},
-								"sink": {
-									"path": "$['CustomerID']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['ProductID']"
-								},
-								"sink": {
-									"path": "$['ProductID']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['SaleDate']"
-								},
-								"sink": {
-									"path": "$['SaleDate']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Quantity']"
-								},
-								"sink": {
-									"path": "$['Quantity']"
-								}
-							},
-							{
-								"source": {
-									"path": "$['TotalAmount']"
-								},
-								"sink": {
-									"path": "$['TotalAmount']"
-								}
-							}
-						]
-					}
+					"enableStaging": false
 				},
 				"inputs": [
 					{
