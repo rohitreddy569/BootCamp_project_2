@@ -1,5 +1,5 @@
 {
-	"name": "sales_cleaned",
+	"name": "sales_silver",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "AzureDataLakeStorage1",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "sales_cleaned",
+				"folderPath": "Sales_cleaned",
 				"fileSystem": "silver"
 			},
 			"columnDelimiter": ",",
