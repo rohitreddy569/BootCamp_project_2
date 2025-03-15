@@ -356,6 +356,108 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/customers')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "`customers_sample`.txt",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "CustomerName",
+						"type": "String"
+					},
+					{
+						"name": "Email",
+						"type": "String"
+					},
+					{
+						"name": "Phone",
+						"type": "String"
+					},
+					{
+						"name": "City",
+						"type": "String"
+					},
+					{
+						"name": "Country",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/product_csv')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "products_sample.csv",
+						"fileSystem": "bronze"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "ProductName",
+						"type": "String"
+					},
+					{
+						"name": "Category",
+						"type": "String"
+					},
+					{
+						"name": "Price",
+						"type": "String"
+					},
+					{
+						"name": "StockQuantity",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/restapi')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -371,6 +473,52 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_RestService1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sales_json')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "sales_sample",
+						"fileSystem": "bronze"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"SaleID": {
+							"type": "number"
+						},
+						"CustomerID": {
+							"type": "number"
+						},
+						"ProductID": {
+							"type": "integer"
+						},
+						"SaleDate": {
+							"type": "string"
+						},
+						"Quantity": {
+							"type": "integer"
+						},
+						"TotalAmount": {
+							"type": "number"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
 			]
 		},
 		{
@@ -523,6 +671,434 @@
 				"typeProperties": {}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "product_csv",
+								"type": "DatasetReference"
+							},
+							"name": "products"
+						},
+						{
+							"dataset": {
+								"referenceName": "sales_json",
+								"type": "DatasetReference"
+							},
+							"name": "sales"
+						},
+						{
+							"dataset": {
+								"referenceName": "customers",
+								"type": "DatasetReference"
+							},
+							"name": "customers"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "sales_silver",
+								"type": "DatasetReference"
+							},
+							"name": "silver1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Products_silver",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Customers_silver",
+								"type": "DatasetReference"
+							},
+							"name": "Silver3"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "derivedColumn2"
+						},
+						{
+							"name": "derivedColumn3"
+						},
+						{
+							"name": "filter2"
+						},
+						{
+							"name": "filter3",
+							"description": "Removing the null values"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "join1"
+						},
+						{
+							"name": "derivedColumn4"
+						},
+						{
+							"name": "ModifyColumns1",
+							"description": "Autogenerated by data preview actions"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "derivedColumn5"
+						},
+						{
+							"name": "select3"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as integer,",
+						"          ProductName as string,",
+						"          Category as string,",
+						"          Price as integer,",
+						"          StockQuantity as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> products",
+						"source(output(",
+						"          CustomerID as integer,",
+						"          ProductID as integer,",
+						"          Quantity as integer,",
+						"          SaleDate as date,",
+						"          SaleID as integer,",
+						"          TotalAmount as float,",
+						"          amount as float,",
+						"          category as integer,",
+						"          date as date,",
+						"          id as integer,",
+						"          value1 as integer,",
+						"          value2 as integer,",
+						"          value3 as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'documentPerLine',",
+						"     unquotedColumnNames: true,",
+						"     hasComments: true,",
+						"     singleQuoted: true,",
+						"     backslashEscape: true) ~> sales",
+						"source(output(",
+						"          CustomerID as string,",
+						"          CustomerName as string,",
+						"          Email as string,",
+						"          Phone as string,",
+						"          City as string,",
+						"          Country as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> customers",
+						"sales derive(final_quantity = iif(!isNull(Quantity), Quantity, iif(!isNull(value3),value3 , category)),",
+						"          final_CustomerID = iif(!isNull(CustomerID), CustomerID, value1),",
+						"          final_ProductID = iif(!isNull(ProductID), ProductID, value2),",
+						"          final_SaleID = iif(!isNull(SaleID), SaleID, id),",
+						"          final_SaleDate = iif(!isNull(SaleDate), SaleDate, date),",
+						"          final_TotalAmount = iif(!isNull(TotalAmount), TotalAmount, amount)) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          Quantity = final_quantity,",
+						"          CustomerID = final_CustomerID,",
+						"          ProductID = final_ProductID,",
+						"          SaleID = final_SaleID,",
+						"          SaleDate = final_SaleDate,",
+						"          TotalAmount = final_TotalAmount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 derive(Quantity = iif(isNull(Quantity), 0 , Quantity),",
+						"          CustomerID = iif(isNull(CustomerID), 0 , CustomerID),",
+						"          ProductID = iif(isNull(ProductID), 0 , ProductID)) ~> derivedColumn2",
+						"derivedColumn2 derive(TotalAmount = iif(isNull(TotalAmount), 0 , toInteger(TotalAmount))",
+						") ~> derivedColumn3",
+						"derivedColumn3 filter(TotalAmount != 0) ~> filter2",
+						"products filter(ProductName != 'NULL') ~> filter3",
+						"filter3 aggregate(groupBy(Category),",
+						"     Price = avg(Price)) ~> aggregate1",
+						"aggregate1, filter3 join(aggregate1@Category == products@Category,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> join1",
+						"join1 derive(Final_Price = iifNull(products@Price, aggregate1@Price, products@Price),",
+						"          StockQuantity = iif(StockQuantity == 'None', 0, toInteger(StockQuantity))) ~> derivedColumn4",
+						"derivedColumn4 derive(Final_Price = toInteger(toDouble(toInteger(toDecimal(toInteger(toInteger(Final_Price))))))) ~> ModifyColumns1",
+						"ModifyColumns1 select(mapColumn(",
+						"          ProductID,",
+						"          ProductName,",
+						"          Category = products@Category,",
+						"          StockQuantity,",
+						"          Final_Price",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"customers derive(Email = iifNull(Email, 'Unknown', Email),",
+						"          City = iifNull(City, 'Unknown', City),",
+						"          Country = iifNull(Country, 'Unknown', Country)) ~> derivedColumn5",
+						"derivedColumn5 select(mapColumn(",
+						"          CustomerID,",
+						"          CustomerName,",
+						"          Phone,",
+						"          City,",
+						"          Country",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select3",
+						"filter2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> silver1",
+						"select2 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Quantity as string,",
+						"          CustomerID as string,",
+						"          ProductID as string,",
+						"          SaleID as string,",
+						"          SaleDate as string,",
+						"          TotalAmount as string",
+						"     ),",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1",
+						"select3 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Quantity as string,",
+						"          CustomerID as string,",
+						"          ProductID as string,",
+						"          SaleID as string,",
+						"          SaleDate as string,",
+						"          TotalAmount as string",
+						"     ),",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> Silver3"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/product_csv')]",
+				"[concat(variables('factoryId'), '/datasets/sales_json')]",
+				"[concat(variables('factoryId'), '/datasets/customers')]",
+				"[concat(variables('factoryId'), '/datasets/sales_silver')]",
+				"[concat(variables('factoryId'), '/datasets/Products_silver')]",
+				"[concat(variables('factoryId'), '/datasets/Customers_silver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/sales_silver')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Sales_cleaned",
+						"fileSystem": "silver"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Bronze to Silver')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "dataflow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "dataflow1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"products": {},
+									"sales": {},
+									"customers": {},
+									"silver1": {},
+									"sink1": {},
+									"Silver3": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Products_silver')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Products_cleaned",
+						"fileSystem": "silver"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Quantity",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "SaleID",
+						"type": "String"
+					},
+					{
+						"name": "SaleDate",
+						"type": "String"
+					},
+					{
+						"name": "TotalAmount",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Customers_silver')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "Customers_cleaned",
+						"fileSystem": "silver"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Quantity",
+						"type": "String"
+					},
+					{
+						"name": "CustomerID",
+						"type": "String"
+					},
+					{
+						"name": "ProductID",
+						"type": "String"
+					},
+					{
+						"name": "SaleID",
+						"type": "String"
+					},
+					{
+						"name": "SaleDate",
+						"type": "String"
+					},
+					{
+						"name": "TotalAmount",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
 		}
 	]
 }
