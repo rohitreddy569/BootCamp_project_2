@@ -1,9 +1,9 @@
 {
-	"name": "Silevr to SQL DB",
+	"name": "Silver to SQL DB",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "copy customer data to sql DB",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -20,6 +20,11 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.customer",
+								"type": "Expression"
+							},
+							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -55,7 +60,7 @@
 				]
 			},
 			{
-				"name": "Copy data2",
+				"name": "Copy products data to SQL DB",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -72,6 +77,11 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.products",
+								"type": "Expression"
+							},
+							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -107,7 +117,7 @@
 				]
 			},
 			{
-				"name": "Copy data3",
+				"name": "Copy sales data to SQL DB",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -124,6 +134,11 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": {
+								"value": "@pipeline().parameters.sales",
+								"type": "Expression"
+							},
+							"wildcardFileName": "*.csv",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -159,6 +174,20 @@
 				]
 			}
 		],
+		"parameters": {
+			"customer": {
+				"type": "string",
+				"defaultValue": "Customers_cleaned"
+			},
+			"products": {
+				"type": "string",
+				"defaultValue": "Products_cleaned"
+			},
+			"sales": {
+				"type": "string",
+				"defaultValue": "Sales_cleaned"
+			}
+		},
 		"annotations": []
 	}
 }

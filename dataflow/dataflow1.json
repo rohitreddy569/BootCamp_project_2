@@ -185,7 +185,6 @@
 				"derivedColumn5 select(mapColumn(",
 				"          CustomerID,",
 				"          CustomerName,",
-				"          Phone,",
 				"          City,",
 				"          Country",
 				"     ),",
