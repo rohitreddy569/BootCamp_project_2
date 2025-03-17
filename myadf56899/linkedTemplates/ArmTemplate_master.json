@@ -19,6 +19,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'ls_restapi'"
 		},
+		"AzureMySql1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureMySql1'"
+		},
+		"AzureSqlDatabase1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AzureSqlDatabase1'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mystracc569.dfs.core.windows.net/"
@@ -42,6 +50,18 @@
 		"ls_restapi_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mystracc569.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "myserver56999.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "finalbootcamp2"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "rohit569"
 		},
 		"containerUri": {
 			"type": "string",
@@ -76,6 +96,12 @@
 					"ls_restapi_accountKey": {
 						"value": "[parameters('ls_restapi_accountKey')]"
 					},
+					"AzureMySql1_connectionString": {
+						"value": "[parameters('AzureMySql1_connectionString')]"
+					},
+					"AzureSqlDatabase1_password": {
+						"value": "[parameters('AzureSqlDatabase1_password')]"
+					},
 					"MySql1_password": {
 						"value": "[parameters('MySql1_password')]"
 					},
@@ -87,6 +113,15 @@
 					},
 					"ls_restapi_properties_typeProperties_url": {
 						"value": "[parameters('ls_restapi_properties_typeProperties_url')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_server": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_server')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_database": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_database')]"
+					},
+					"AzureSqlDatabase1_properties_typeProperties_userName": {
+						"value": "[parameters('AzureSqlDatabase1_properties_typeProperties_userName')]"
 					},
 					"MySql1_properties_typeProperties_server": {
 						"value": "[parameters('MySql1_properties_typeProperties_server')]"

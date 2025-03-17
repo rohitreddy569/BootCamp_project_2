@@ -14,6 +14,12 @@
 		"ls_restapi_accountKey": {
 			"value": ""
 		},
+		"AzureMySql1_connectionString": {
+			"value": ""
+		},
+		"AzureSqlDatabase1_password": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://mystracc569.dfs.core.windows.net/"
 		},
@@ -31,6 +37,15 @@
 		},
 		"ls_restapi_properties_typeProperties_url": {
 			"value": "https://mystracc569.dfs.core.windows.net/"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_server": {
+			"value": "myserver56999.database.windows.net"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_database": {
+			"value": "finalbootcamp2"
+		},
+		"AzureSqlDatabase1_properties_typeProperties_userName": {
+			"value": "rohit569"
 		}
 	}
 }
